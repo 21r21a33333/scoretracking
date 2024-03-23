@@ -118,13 +118,16 @@ class Codechefclass {
                         }
     
                         // Check if the question is not already present
-                        if (!existingQuestions.has(problemLink)) {
+                        const parts = problemLink.split('/');
+                        const lastWord = parts[parts.length - 1];
+                        const thirdToLastWord = parts[parts.length - 3];
+                        if (!existingQuestions.has(lastWord)) {
                             time=moment(time).utcOffset('+05:30').format('YYYY-MM-DD HH:mm:ss');
                             // console.log(last_retrived,time);
                              if(last_retrived >= time){
                                 flag=true;return;
                             }
-                            acceptedSolutions.push({ time: time, problem: problem, problemLink: `https://www.codechef.com${problemLink}` });
+                            acceptedSolutions.push({ time: time, problem: problem, problemLink: thirdToLastWord ? `https://www.codechef.com/${thirdToLastWord}/problems/${lastWord}` : `https://www.codechef.com/problems/${lastWord}` });
                             existingQuestions.add(problemLink);
                            // Add the question link to the set
                         }
