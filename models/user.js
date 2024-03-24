@@ -1,6 +1,7 @@
-const mongoose=require("mongoose");
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     "roll_no": {
       "type": "string",
        "required": true,
@@ -14,13 +15,6 @@ const userSchema = new mongoose.Schema({
       "type": "string",
       // "required": true
     },
-    // "courses_ref": {
-    //   "type": ["array", "reference"],
-    //   "items": {
-    //     "type": "ObjectId",
-    //     "ref": "Course"
-    //   }
-    // },
     "codechef_handle": {
       "type": "string",
       "required": true
@@ -55,10 +49,11 @@ const userSchema = new mongoose.Schema({
         "type": "ObjectId",
         "ref": "ProblemsSolvedByStudent",
         "required": true
-    }
+    },
+    "enrolled_courses": [{ "type": Schema.Types.ObjectId, ref: 'Course' }], // Enrolled courses for the user
   }
-  );
+);
 
-  userSchema.index({roll_no: 1});
-const Users=mongoose.model("User",userSchema);
-module.exports=Users;
+userSchema.index({roll_no: 1});
+const Users = mongoose.model("User", userSchema);
+module.exports = Users;
