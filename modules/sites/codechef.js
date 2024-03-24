@@ -128,7 +128,7 @@ class Codechefclass {
                                 flag=true;return;
                             }
                             acceptedSolutions.push({ time: time, problem: problem, problemLink: thirdToLastWord ? `https://www.codechef.com/${thirdToLastWord}/problems/${lastWord}` : `https://www.codechef.com/problems/${lastWord}` });
-                            existingQuestions.add(problemLink);
+                            existingQuestions.add(lastWord);
                            // Add the question link to the set
                         }
                     }
