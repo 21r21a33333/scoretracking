@@ -7,7 +7,8 @@ const {databaseconnect}=require("./dbconfig");
 
 //starter problem model
 const { Problems}= require("./models/all_problems");
-
+const {main}=require('./temp');
+ main();
 
 const ccrouter = require('./router/codechefscores');
 const lcrouter = require('./router/leetcodescores');
@@ -17,7 +18,7 @@ const codeforcesrouter = require('./router/codeforcesscore');
 const regisrationrouter = require('./router/registration/register');
 const leaderboardsortedrouter = require('./router/leaderboardroutes/sortedboard');
 //added route for fetching course details
-const fetchcourserouter=require('./router/courseworkroutes/fetchcourse');
+const courserouter=require('./router/courseworkroutes/coureworkrouter');
 
 
 
@@ -28,8 +29,7 @@ const mainf = require('./modules/sites/scoresupdataion');
 // dbconnection
 databaseconnect();
 
-//Temporary addition of course work
-const { courses }=require("./models/course_work");
+
 
 
 // cors
@@ -52,7 +52,7 @@ app.use('/codeforces',codeforcesrouter);
 app.use('/register',regisrationrouter);
 app.use('/leaderboard',leaderboardsortedrouter);
 //added route for coursework
-app.use('/sendcourse',fetchcourserouter);
+app.use('/add',courserouter);
 
 
 app.get("/updateall",async(req,res)=>{
