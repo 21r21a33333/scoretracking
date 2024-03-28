@@ -19,7 +19,12 @@ const regisrationrouter = require('./router/registration/register');
 const leaderboardsortedrouter = require('./router/leaderboardroutes/sortedboard');
 //added route for fetching course details
 const courserouter=require('./router/courseworkroutes/coureworkrouter');
-
+const authenticaterouter = require("./router/registration/authenticate");
+const sendotprouter = require("./router/registration/send_otp");
+const getcredentialsrouter = require("./router/registration/get_creds");
+const updatephonerouter = require("./router/dashboard/update_phone");
+const updateemailrouter = require("./router/dashboard/update_email");
+const updatedetailsrouter = require("./router/dashboard/update_details");
 
 
 // models
@@ -49,10 +54,17 @@ app.use('/leetcode',lcrouter);
 app.use('/hackerrank',hrrouter);
 app.use('/spoj',spojrouter);
 app.use('/codeforces',codeforcesrouter);
-app.use('/register',regisrationrouter);
 app.use('/leaderboard',leaderboardsortedrouter);
 //added route for coursework
 app.use('/add',courserouter);
+app.use("/register", regisrationrouter);
+app.use("/authenticate", authenticaterouter);
+app.use("/sendotp", sendotprouter);
+app.use("/getcreds", getcredentialsrouter);
+app.use("/uemail", updateemailrouter);
+app.use("/uphone", updatephonerouter);
+app.use("/udetails", updatedetailsrouter);
+
 
 
 app.get("/updateall",async(req,res)=>{
