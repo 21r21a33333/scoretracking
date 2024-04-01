@@ -18,7 +18,7 @@ const assessmentsSchema = new mongoose.Schema({
 
 
   const CourseSchema = new mongoose.Schema({
-    courseid: { type: String, required: true },
+    courseid: { type: String, required: true , unique: true },
     coursetags: [{ type: String }],
     title: { type: String, required: true },
     description: { type: String },
@@ -63,7 +63,7 @@ const assessmentsSchema = new mongoose.Schema({
     },
     assessment_ref: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Assessment', // Assuming 'Assessment' is the model name for assessments
+      ref: 'Assessments', // Assuming 'Assessment' is the model name for assessments
     },
   });
 
