@@ -1,55 +1,70 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-    "roll_no": {
-      "type": "string",
-       "required": true,
-      unique:true,
-    },
-    "name": {
-      "type": "string",
-      // "required": true
-    },
-    "password": {
-      "type": "string",
-      // "required": true
-    },
-    "codechef_handle": {
-      "type": "string",
-      "required": true
-    },
-    "leetcode_handle": {
-      "type": "string",
-      "required": true
-    },
-    "codeforces_handle": {
-      "type": "string",
-      "required": true
-    },
-    "hackerrank_handle": {
-      "type": "string",
-      "required": true
-    },
-    "spoj_handle": {
-      "type": "string",
-      "required": true
-    },
-    "leaderboard_ref": {
-      "type": "ObjectId",
-      "ref": "Leaderboard",
-      "required": true
-    },
-    "credential_ref": {
-        "type": "ObjectId",
-        "ref": "Tracked_Scores",
-        "required": true
-    },
-    "problems_solved": {
-        "type": "ObjectId",
-        "ref": "ProblemsSolvedByStudent",
-        "required": true
-    },
+const userSchema = new mongoose.Schema({
+  roll_no: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  codechef_handle: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  leetcode_handle: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  codeforces_handle: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  hackerrank_handle: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  spoj_handle: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  leaderboard_ref: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Leaderboard",
+    required: true,
+  },
+  credential_ref: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Tracked_Scores",
+    required: true,
+  },
+  problems_solved: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ProblemsSolvedByStudent",
+    required: true,
+  },
     "enrolled_courses": [{ "type": Schema.Types.ObjectId, ref: 'Course' }], // Enrolled courses for the user
   }
 );
