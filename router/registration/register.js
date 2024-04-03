@@ -122,6 +122,7 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
       insta_handle: body.insta_handle || "",
       linkedin_handle: body.linkedin_handle || "",
       github: body.github || "",
+      daily_solved_problem_count : [],
     });
     // console.log(user_doc);
     // console.log(solved_doc);

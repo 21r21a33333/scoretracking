@@ -27,6 +27,7 @@ const updatephonerouter = require("./router/dashboard/update_phone");
 const updateemailrouter = require("./router/dashboard/update_email");
 const updatedetailsrouter = require("./router/dashboard/update_details");
 const coursesfetchrouter=require('./router/courseworkroutes/coursefetchrouter');
+const heatmaprouter=require('./router/dashboard/heatmap');
 
 
 // models
@@ -68,7 +69,7 @@ app.use("/getcreds", getcredentialsrouter);
 app.use("/uemail", updateemailrouter);
 app.use("/uphone", updatephonerouter);
 app.use("/udetails", updatedetailsrouter);
-
+app.use("/heatmap", heatmaprouter);
 
 
 app.get("/updateall",async(req,res)=>{

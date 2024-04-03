@@ -5,6 +5,7 @@ const solved_model=require("../../models/solved_problems");
 const tracked_scores_model=require("../../models/tracked_scores");
 const leaderboard_model=require("../../models/leaderboard");
 const Problems_model=require("../../models/all_problems");
+const dashboard=require("../../models/dashboard");
 
 class Process_scores{
     constructor({rollno,codechef,codeforces,hackerrank,spoj,leetcode}) {
@@ -351,6 +352,7 @@ class Process_scores{
         let leetcode_handle=this.leetcode_handle;
 
         let solved_data=await solved_model.find({roll_no:rollno});
+       
 
         let Codechefclass=require("./codechef");
         let codechef_obj=new Codechefclass(codechef_handle);
@@ -368,12 +370,90 @@ class Process_scores{
         // console.log(spoj_data);
 
         let leeetcode=await axios.get(`http://localhost:8800/leetcode/${leetcode_handle}`);
+
         let leetcode_data=(leeetcode.data);
-        // console.log(leetcode_data);
+        // console.log(leetcode_handle,leetcoderating);
 
         let tracked_scores_data=await tracked_scores_model.find({roll_no:rollno});
         tracked_scores_data=await tracked_scores_model.findById(tracked_scores_data[0]._id);
+        let dashboard_data=await dashboard.findOne({roll_no:rollno});
 
+       
+        try {
+            const response = await axios.post('https://leetcode.com/graphql', {
+                query: `
+                    query GetUserContestRanking($username: String!) {
+                        userContestRanking(username: $username) {
+                            rating
+                        }
+                    }
+                `,
+                variables: {
+                    username: leetcode_handle
+                }
+            });
+        
+            let leetcoderating = response.data.data.userContestRanking.rating;
+            tracked_scores_data.lc_rating=leetcoderating;
+            
+        } catch (error) {
+           console.log(error);
+        }
+        
+        if(dashboard_data.daily_solved_problem_count.length===0)
+        {
+            dashboard_data.daily_solved_problem_count.push({
+                date : new Date(),
+                codechef_solved_today : 0,
+                codechef_total_solved : solved_data[0].codechef_solved.length,
+                hackerrank_solved_today : 0,
+                hackerrank_total_solved : solved_data[0].hackerrank_solved.length,
+                codeforces_solved_today :0,
+                codeforces_total_solved : codeforces_data.problems_solved,
+                spoj_solved_today : 0,
+                spoj_total_solved : parseInt(spoj_data.Problems_solved),
+                leetcode_solved_today : 0,
+                leetcode_total_solved : leetcode_data.totalSolved,
+            });
+            await dashboard_data.save();
+        }
+        else
+        {
+            const last_index= dashboard_data.daily_solved_problem_count.length-1;
+            const yesterday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
+            // console.log(yesterday);
+            // Taking yesterday as we will be updating after 12
+            if (dashboard_data.daily_solved_problem_count[last_index].date >= yesterday) {
+
+                dashboard_data.daily_solved_problem_count[last_index].codechef_solved_today=dashboard_data.daily_solved_problem_count[last_index].codechef_solved_today+solved_data[0].codechef_solved.length-dashboard_data.daily_solved_problem_count[last_index].codechef_total_solved; 
+                dashboard_data.daily_solved_problem_count[last_index].codechef_total_solved=solved_data[0].codechef_solved.length;
+                dashboard_data.daily_solved_problem_count[last_index].hackerrank_solved_today= dashboard_data.daily_solved_problem_count[last_index].hackerrank_solved_today+solved_data[0].hackerrank_solved.length-dashboard_data.daily_solved_problem_count[last_index].hackerrank_total_solved; 
+                dashboard_data.daily_solved_problem_count[last_index].hackerrank_total_solved=solved_data[0].hackerrank_solved.length; 
+                dashboard_data.daily_solved_problem_count[last_index].codeforces_solved_today= dashboard_data.daily_solved_problem_count[last_index].codeforces_solved_today+codeforces_data.problems_solved-dashboard_data.daily_solved_problem_count[last_index].codeforces_total_solved;
+                dashboard_data.daily_solved_problem_count[last_index].codeforces_total_solved=codeforces_data.problems_solved;
+                dashboard_data.daily_solved_problem_count[last_index].spoj_solved_today= dashboard_data.daily_solved_problem_count[last_index].spoj_solved_today+parseInt(spoj_data.Problems_solved)-dashboard_data.daily_solved_problem_count[last_index].spoj_total_solved;
+                dashboard_data.daily_solved_problem_count[last_index].spoj_total_solved=parseInt(spoj_data.Problems_solved);
+                dashboard_data.daily_solved_problem_count[last_index].leetcode_solved_today= dashboard_data.daily_solved_problem_count[last_index].leetcode_solved_today+leetcode_data.totalSolved-dashboard_data.daily_solved_problem_count[last_index].leetcode_total_solved; 
+                dashboard_data.daily_solved_problem_count[last_index].leetcode_total_solved=leetcode_data.totalSolved; 
+             
+            }
+            else{
+                dashboard_data.daily_solved_problem_count.push({
+                    date : yesterday,
+                    codechef_solved_today : solved_data[0].codechef_solved.length-dashboard_data.daily_solved_problem_count[last_index].codechef_total_solved,
+                    codechef_total_solved : solved_data[0].codechef_solved.length,
+                    hackerrank_solved_today : solved_data[0].hackerrank_solved.length-dashboard_data.daily_solved_problem_count[last_index].hackerrank_total_solved,
+                    hackerrank_total_solved : solved_data[0].hackerrank_solved.length,
+                    codeforces_solved_today :codeforces_data.problems_solved-dashboard_data.daily_solved_problem_count[last_index].codeforces_total_solved,
+                    codeforces_total_solved : codeforces_data.problems_solved,
+                    spoj_solved_today : spoj_solved_today=parseInt(spoj_data.Problems_solved)-dashboard_data.daily_solved_problem_count[last_index].spoj_total_solved,
+                    spoj_total_solved : parseInt(spoj_data.Problems_solved),
+                    leetcode_solved_today : leetcode_data.totalSolved-dashboard_data.daily_solved_problem_count[last_index].leetcode_total_solved,
+                    leetcode_total_solved : leetcode_data.totalSolved,
+                })
+            }
+            await dashboard_data.save();  
+        }
         tracked_scores_data.lc_solved=leetcode_data.totalSolved;
         tracked_scores_data.cc_solved=solved_data[0].codechef_solved.length;
         tracked_scores_data.cf_solved=codeforces_data.problems_solved;
@@ -381,8 +461,9 @@ class Process_scores{
         tracked_scores_data.hr_solved=solved_data[0].hackerrank_solved.length;
         // console.log(solved_data[0].hackerrank_solved.length);
 
-        tracked_scores_data.cc_rating=codechef_data.currentRating;
+        tracked_scores_data.cc_rating=parseInt(codechef_data.currentRating);
         tracked_scores_data.cf_rating=codeforces_data.rating;
+       
         // console.log(tracked_scores_data);   
 
         let update_response_total=await tracked_scores_data.save();

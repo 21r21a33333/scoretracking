@@ -57,6 +57,21 @@ const dashboardSchema = new mongoose.Schema({
   github: {
     type: String,
   },
+  daily_solved_problem_count :
+  [{
+    date : {type : Date }, 
+    codechef_solved_today : {type : Number },
+    codechef_total_solved : {type : Number },
+    hackerrank_solved_today : {type : Number},
+    hackerrank_total_solved : {type : Number},
+    codeforces_solved_today : {type : Number},
+    codeforces_total_solved : {type : Number},
+    spoj_solved_today : {type : Number},
+    spoj_total_solved : {type : Number},
+    leetcode_solved_today : {type : Number},
+    leetcode_total_solved : {type : Number},
+  },]
+  
 });
 
 dashboardSchema.index({ roll_no: 1 });
