@@ -28,6 +28,10 @@ const updateemailrouter = require("./router/dashboard/update_email");
 const updatedetailsrouter = require("./router/dashboard/update_details");
 const coursesfetchrouter=require('./router/courseworkroutes/coursefetchrouter');
 const heatmaprouter=require('./router/dashboard/heatmap');
+const is_valid_user=require("./middlewares/is_valid_user");
+const updateImagerouter=require("./router/dashboard/update_image");
+const upcommingcontestrouter=require("./router/upcomingcontests");
+const jobsrouter=require("./router/fetchjobs");
 
 
 // models
@@ -66,10 +70,13 @@ app.use("/register", regisrationrouter);
 app.use("/authenticate", authenticaterouter);
 app.use("/sendotp", sendotprouter);
 app.use("/getcreds", getcredentialsrouter);
-app.use("/uemail", updateemailrouter);
-app.use("/uphone", updatephonerouter);
-app.use("/udetails", updatedetailsrouter);
-app.use("/heatmap", heatmaprouter);
+app.use("/uemail",is_valid_user, updateemailrouter);
+app.use("/uphone",is_valid_user, updatephonerouter);
+app.use("/udetails",is_valid_user, updatedetailsrouter);
+app.use("/heatmap",is_valid_user, heatmaprouter);
+app.use("/uimage", updateImagerouter);
+app.use("/upcomming-contests", upcommingcontestrouter);
+app.use("/jobs", jobsrouter);
 
 
 app.get("/updateall",async(req,res)=>{

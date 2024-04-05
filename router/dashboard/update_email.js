@@ -9,8 +9,9 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  const rollno = req.roll_no;
   try {
-    const { rollno, email } = req.body;
+    const { email } = req.body;
 
     // Update email in the User schema
     const updatedUser = await User.findOneAndUpdate(

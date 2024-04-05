@@ -18,6 +18,10 @@ function is_profile_available(req, res, next) {
   let body = req.body;
   if (
     body.name &&
+    body.email &&
+    body.phone_number &&
+    body.password &&
+    body.username &&
     body.rollno &&
     body.codechef &&
     body.codeforces &&
@@ -94,6 +98,7 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
       password: EncryptedPass,
       email: body.email,
       username: body.username,
+      phone_number: body.phone_number,
       codechef_handle: body.codechef,
       leetcode_handle: body.leetcode,
       codeforces_handle: body.codeforces,
@@ -106,23 +111,24 @@ router.post("/", is_profile_available, is_valid_profile, async (req, res) => {
     // console.log(body.phone_number);
     let dashboard_doc = await dashboard_model.collection.insertOne({
       roll_no: body.rollno,
-      user_name: body.username || "",
-      email: body.email || "",
-      phone_number: body.phone_number || "",
+      user_name: body.username ,
+      profile: body.profile || "",
+      email: body.email ,
+      phone_number: body.phone_number ,
       dob: body.dob || "",
-      gender: body.gender || "",
+      gender: body.gender  ||"",
       about_me: body.about_me || "",
       building: body.building || "",
       state: body.state || "",
       city: body.city || "",
       street: body.street || "",
       postal_code: body.postal_code || "",
-      fb_handle: body.fb_handle || "",
-      twitter_handle: body.twitter_handle || "",
+      fb_handle: body.fb_handle  ||"",
+      twitter_handle: body.twitter_handle||  "",
       insta_handle: body.insta_handle || "",
-      linkedin_handle: body.linkedin_handle || "",
+      linkedin_handle: body.linkedin_handle||  "",
       github: body.github || "",
-      daily_solved_problem_count : [],
+      daily_solved_problem_count :[]
     });
     // console.log(user_doc);
     // console.log(solved_doc);

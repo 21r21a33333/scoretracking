@@ -8,9 +8,9 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  const rollno = req.roll_no;
   try {
     const {
-      rollno,
       name,
       email,
       dob,
