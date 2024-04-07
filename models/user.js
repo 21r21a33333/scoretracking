@@ -69,7 +69,7 @@ const userSchema = new mongoose.Schema({
     ref: "ProblemsSolvedByStudent",
     required: true,
   },
-    "enrolled_courses": [{ "type": Schema.Types.ObjectId, ref: 'Course' }], // Enrolled courses for the user
+   enrolled_courses: [String]// Enrolled courses for the user
   }
 );
 

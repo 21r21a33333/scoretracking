@@ -97,6 +97,7 @@ class Process_scores{
             for (const element of cfnewlysolved) {
                 console.log("element-name",element.name);
                 let problem_doc = await Problems_model.findOne({ problem_name: element.name });
+                
             
                 if (problem_doc) {
                     console.log("inside available in cf db");
@@ -108,7 +109,7 @@ class Process_scores{
                     if (! solved_doc_for_update.codeforces_solved.includes(problemId)) {
                         console.log("problemIdnot available in codeforces_solved array");
 
-                        solved_doc_for_update.codeforces_solved.push(problemId); // Add to array
+                        solved_doc_for_update.codeforces_solved.push({problem:problemId,date: element.time}); // Add to array
 
                         await solved_doc_for_update.save();
                         console.log("Problem added to codeforces_solved array.");
@@ -129,7 +130,7 @@ class Process_scores{
             
                     // Check if the problemId is not already in the array
                     
-                        solved_doc_for_update.codeforces_solved.push(problemId); // Add to array
+                        solved_doc_for_update.codeforces_solved.push({problem:problemId,date: element.time}); // Add to array
                         await solved_doc_for_update.save();
                         console.log("New problem created and added to codeforces_solved array.");
                     
@@ -159,7 +160,7 @@ class Process_scores{
             
                     // Check if the problemId is not already in the array
                     if (!solved_doc_for_update.codechef_solved.includes(problemId)) {
-                        solved_doc_for_update.codechef_solved.push(problemId); // Add to array
+                        solved_doc_for_update.codechef_solved.push({problem:problemId,date: element.time}); // Add to array
                         await solved_doc_for_update.save();
                         console.log("Problem added to codechef_solved array.");
                     } else {
@@ -178,7 +179,7 @@ class Process_scores{
             
                     // Check if the problemId is not already in the array
                     if (!solved_doc_for_update.codechef_solved.includes(problemId)) {
-                        solved_doc_for_update.codechef_solved.push(problemId); // Add to array
+                        solved_doc_for_update.codechef_solved.push({problem:problemId,date: element.time}); // Add to array
                         await solved_doc_for_update.save();
                         console.log("New problem created and added to codechef_solved array.");
                     } else {
@@ -217,7 +218,7 @@ class Process_scores{
             
                     // Check if the problemId is not already in the array
                     if (!solved_doc_for_update.spoj_solved.includes(problemId)) {
-                        solved_doc_for_update.spoj_solved.push(problemId); // Add to array
+                        solved_doc_for_update.spoj_solved.push({problem:problemId,date: element.time}); // Add to array
                         await solved_doc_for_update.save();
                         console.log("Problem added to spoj_solved array.");
                     } else {
@@ -236,7 +237,7 @@ class Process_scores{
             
                     // Check if the problemId is not already in the array
                     if (!solved_doc_for_update.spoj_solved.includes(problemId)) {
-                        solved_doc_for_update.spoj_solved.push(problemId); // Add to array
+                        solved_doc_for_update.spoj_solved.push({problem:problemId,date: element.time}); // Add to array
                         await solved_doc_for_update.save();
                         console.log("New problem created and added to spoj_solved array.");
                     } else {
@@ -278,7 +279,7 @@ class Process_scores{
             
                     // Check if the problemId is not already in the array
                     if (!solved_doc_for_update.hackerrank_solved.includes(problemId)) {
-                        solved_doc_for_update.hackerrank_solved.push(problemId); // Add to array
+                        solved_doc_for_update.hackerrank_solved.push({problem:problemId,date: element.created_at}); // Add to array
                         let data = await solved_doc_for_update.save();
                         console.log("Problem added to hackerrank_solved array.");
                     } else {
@@ -297,7 +298,7 @@ class Process_scores{
             
                     // Check if the problemId is not already in the array
                     if (!solved_doc_for_update.hackerrank_solved.includes(problemId)) {
-                        solved_doc_for_update.hackerrank_solved.push(problemId); // Add to array
+                        solved_doc_for_update.hackerrank_solved.push({problem:problemId,date: element.created_at}); // Add to array
                         let data = await solved_doc_for_update.save();
                         console.log("New problem created and added to hackerrank_solved array.");
                     } else {
