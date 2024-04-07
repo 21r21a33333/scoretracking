@@ -9,7 +9,7 @@ const uploadFile = async (req, res) => {
     // console.log(upload);
 
     const update_image = await Dashboard.findOneAndUpdate(
-      { roll_no },
+      { roll_no:roll_no },
       { profile: upload },
       { new: true }
     );

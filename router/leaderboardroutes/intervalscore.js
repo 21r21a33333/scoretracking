@@ -4,11 +4,11 @@ const ProblemsSolvedByStudent = require("../../models/solved_problems");
 const Tracked_Scores = require("../../models/tracked_scores");
 // const Users=require("../../models/user");
 
-router.get("/:roll_no", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const start_date = req.body.start_date;
         const end_date = req.body.end_date;
-
+        let roll_no = req.roll_no;
         // Convert start_date and end_date strings to Date objects
         const startDate = new Date(start_date);
         const endDate = new Date(end_date);
@@ -16,8 +16,8 @@ router.get("/:roll_no", async (req, res) => {
         // console.log(startDate,endDate);
 
         // Query the database
-        const studentData = await ProblemsSolvedByStudent.findOne({ roll_no: req.params.roll_no });
-        const studentInfo = await Tracked_Scores.findOne({ roll_no: req.params.roll_no });
+        const studentData = await ProblemsSolvedByStudent.findOne({ roll_no });
+        const studentInfo = await Tracked_Scores.findOne({ roll_no});
         // const user = await Users.findOne({ roll_no: req.params.roll_no });
         // let leeetcode=await axios.get(`http://localhost:8800/leetcode/${user.leetcode_handle}`);
         // const lc_data = leeetcode.submissionCalendar;
